@@ -1,5 +1,5 @@
 #!/bin/bash
-# export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+export CUDA_VISIBLE_DEVICES=0
 
 python3 cli.py \
 --data_dir ../FewGLUE_32dev/CB \
@@ -15,5 +15,3 @@ python3 cli.py \
 --pet_max_seq_length 256 \
 --pet_max_steps 250 \
 --pattern_ids 1 \
-
-# {'acc': 0.8928571428571429, 'f1-macro': 0.8678731870106534}

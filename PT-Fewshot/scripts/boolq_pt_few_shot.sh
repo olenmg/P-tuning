@@ -1,5 +1,5 @@
 #!/bin/bash
-# export CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+export CUDA_VISIBLE_DEVICES=3
 
 python3 cli.py \
 --data_dir ../FewGLUE_32dev/BoolQ \
@@ -16,4 +16,3 @@ python3 cli.py \
 --pet_max_steps 250 \
 --pattern_ids 1 \
 --learning_rate 1e-4 \
-# --seed 13
