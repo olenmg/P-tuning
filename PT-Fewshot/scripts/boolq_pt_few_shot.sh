@@ -1,12 +1,12 @@
 #!/bin/bash
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=0
 
 python3 cli.py \
 --data_dir ../FewGLUE_32dev/BoolQ \
 --model_type albert \
 --model_name_or_path albert-xxlarge-v2 \
 --task_name boolq \
---output_dir ../output/boolq \
+--output_dir ../output_aft/boolq \
 --do_eval \
 --do_train \
 --pet_per_gpu_eval_batch_size 8 \

@@ -1,12 +1,12 @@
 #!/bin/bash
-export CUDA_VISIBLE_DEVICES=2
+export CUDA_VISIBLE_DEVICES=3
 
 python3 cli.py \
   --data_dir ../FewGLUE_32dev/MultiRC \
   --model_type albert \
   --model_name_or_path albert-xxlarge-v2 \
   --task_name multirc \
-  --output_dir ../output/multirc \
+  --output_dir ../output_aft/multirc \
   --do_eval \
   --do_train \
   --pet_per_gpu_eval_batch_size 8 \

@@ -1,12 +1,12 @@
 #!/bin/bash
-export CUDA_VISIBLE_DEVICES=3
+export CUDA_VISIBLE_DEVICES=4
 
 python3 cli.py \
 --data_dir ../FewGLUE_32dev/RTE \
 --model_type albert \
 --model_name_or_path albert-xxlarge-v2 \
 --task_name rte \
---output_dir ../output/rte \
+--output_dir ../output_aft/rte \
 --do_eval \
 --do_train \
 --pet_per_gpu_eval_batch_size 16 \

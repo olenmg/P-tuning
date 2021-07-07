@@ -6,7 +6,7 @@ python3 cli.py \
 --model_type albert \
 --model_name_or_path albert-xxlarge-v2 \
 --task_name wsc \
---output_dir ../output/wsc \
+--output_dir ../output_aft/wsc \
 --do_eval \
 --do_train \
 --pet_per_gpu_eval_batch_size 1 \
