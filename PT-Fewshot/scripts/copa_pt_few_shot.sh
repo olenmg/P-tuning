@@ -10,8 +10,8 @@ python3 cli.py \
 --do_eval \
 --do_train \
 --pet_per_gpu_eval_batch_size 1 \
---pet_per_gpu_train_batch_size 8 \
---pet_gradient_accumulation_steps 2 \
+--pet_per_gpu_train_batch_size 4 \
+--pet_gradient_accumulation_steps 4 \
 --pet_max_seq_length 96 \
 --pet_max_steps 3500 \
 --pattern_ids 1 \
