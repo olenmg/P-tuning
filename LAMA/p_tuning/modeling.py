@@ -129,7 +129,8 @@ class PTuneForLAMA(torch.nn.Module):
             output = self.model(inputs_embeds=inputs_embeds.to(self.device),
                                 attention_mask=attention_mask.to(self.device).bool(),
                                 labels=labels.to(self.device))
-            loss, logits = output.loss, output.logits
+            # loss, logits = output.loss, output.logits
+            loss, logits = output
 
             pred_ids = torch.argsort(logits, dim=2, descending=True)
             hit1 = 0
@@ -154,7 +155,8 @@ class PTuneForLAMA(torch.nn.Module):
             output = self.model(inputs_embeds=inputs_embeds.to(self.device).half(),
                                 attention_mask=attention_mask.to(self.device).half(),
                                 labels=labels.to(self.device))
-            loss, logits = output.loss, output.logits
+            # loss, logits = output.loss, output.logits
+            loss, logits = output
 
             pred_ids = torch.argsort(logits, dim=2, descending=True)
             hit1 = 0
