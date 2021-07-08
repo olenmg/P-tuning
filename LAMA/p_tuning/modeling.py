@@ -150,9 +150,10 @@ class PTuneForLAMA(torch.nn.Module):
             label_mask = (attention_mask.long().sum(dim=1) - 1).unsqueeze(1).to(self.device)
             labels = labels.scatter_(1, label_mask, label_ids)
 
-            loss, logits = self.model(inputs_embeds=inputs_embeds.to(self.device).half(),
+            loss, logits, _ = self.model(inputs_embeds=inputs_embeds.to(self.device).half(),
                                 attention_mask=attention_mask.to(self.device).half(),
                                 labels=labels.to(self.device))
+
 
             pred_ids = torch.argsort(logits, dim=2, descending=True)
             hit1 = 0
