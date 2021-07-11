@@ -56,8 +56,8 @@ def construct_generation_args():
     parser.add_argument("--lstm_dropout", type=float, default=0.0)
 
     # directories
-    parser.add_argument("--data_dir", type=str, default=join(abspath(dirname(__file__)), '../data/LAMA'))
-    parser.add_argument("--out_dir", type=str, default=join(abspath(dirname(__file__)), '../out/LAMA'))
+    parser.add_argument("--data_dir", type=str, default=join(abspath(dirname(__file__)), '../../data/LAMA'))
+    parser.add_argument("--out_dir", type=str, default=join(abspath(dirname(__file__)), '../../out/LAMA'))
     # MegatronLM 11B
     parser.add_argument("--checkpoint_dir", type=str, default=join(abspath(dirname(__file__)), '../checkpoints'))
 
