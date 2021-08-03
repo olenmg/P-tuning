@@ -42,7 +42,7 @@ class PTuneForLAMA(torch.nn.Module):
 
         if 'gpt' in self.args.model_name or 'megatron' in self.args.model_name:
             template = (template[0], template[1], 0)
-        self.template = template
+        self.template = template # (3, 3, 3) or (3, 3, 0)
 
         # load prompt encoder
         self.hidden_size = self.embeddings.embedding_dim
@@ -50,7 +50,7 @@ class PTuneForLAMA(torch.nn.Module):
         self.pseudo_token_id = self.tokenizer.get_vocab()[self.args.pseudo_token]
         self.pad_token_id = self.tokenizer.pad_token_id if self.tokenizer.pad_token_id is not None else self.tokenizer.unk_token_id
 
-        self.spell_length = sum(self.template)
+        self.spell_length = sum(self.template) # 6 or 9
         self.prompt_encoder = PromptEncoder(self.template, self.hidden_size, self.tokenizer, self.device, args)
         self.prompt_encoder = self.prompt_encoder.to(self.device)
 

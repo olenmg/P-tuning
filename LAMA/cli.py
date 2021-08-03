@@ -168,7 +168,7 @@ class Trainer(object):
         path = self.get_save_path()
         os.makedirs(path, exist_ok=True)
         torch.save(best_ckpt, join(path, ckpt_name))
-        # print("# Prompt:", self.model.prompt)
+        print("# Prompt:", self.model.prompt)
         print("# {} Checkpoint {} saved.".format(self.args.relation_id, ckpt_name))
 
     def train(self):
