@@ -1,5 +1,6 @@
 import json
 import os
+import shutil
 import torch
 import argparse
 import numpy as np
@@ -42,7 +43,7 @@ def construct_generation_args():
     parser.add_argument("--early_stop", type=int, default=20)
 
     parser.add_argument("--lr", type=float, default=1e-5)
-    parser.add_argument("--seed", type=int, default=34, help="random seed for initialization")
+    parser.add_argument("--seed", type=int, default=42, help="random seed for initialization")
     parser.add_argument("--decay_rate", type=float, default=0.98)
     parser.add_argument("--weight_decay", type=float, default=0.0005)
     parser.add_argument("--no_cuda", action="store_true", help="Avoid using CUDA when available")
@@ -60,6 +61,9 @@ def construct_generation_args():
     parser.add_argument("--out_dir", type=str, default=join(abspath(dirname(__file__)), '../../out/LAMA'))
     # MegatronLM 11B
     parser.add_argument("--checkpoint_dir", type=str, default=join(abspath(dirname(__file__)), '../checkpoints'))
+
+    parser.add_argument("--owner_user", default=None, type=int, required=True, help="owner user of output files (UID)")
+    parser.add_argument("--owner_group", default=None, type=int, required=True, help="owner group of output files (GID)")
 
     args = parser.parse_args()
 
@@ -127,13 +131,13 @@ class Trainer(object):
             hit1, loss = 0, 0
             for x_hs, x_ts in loader:
                 if False and self.args.extend_data:
-                    loss, _hit1 = self.model.test_extend_data(x_hs, x_ts)
+                    _loss, _hit1 = self.model.test_extend_data(x_hs, x_ts)
                 elif evaluate_type == 'Test':
-                    loss, _hit1, top10 = self.model(x_hs, x_ts, return_candidates=True)
+                    _loss, _hit1, top10 = self.model(x_hs, x_ts, return_candidates=True)
                 else:
-                    loss, _hit1 = self.model(x_hs, x_ts)
+                    _loss, _hit1 = self.model(x_hs, x_ts)
                 hit1 += _hit1
-                loss += loss.item()
+                loss += _loss.item()
             hit1 /= len(dataset)
             print("{} {} Epoch {} Loss: {} Hit@1:".format(self.args.relation_id, evaluate_type, epoch_idx,
                                                           loss / len(dataset)), hit1)
@@ -220,6 +224,18 @@ class Trainer(object):
 
         return best_ckpt
 
+# -- Custom
+
+def set_out_permission(path, owner, group):
+    """
+    Setting path permission recursively
+    """
+
+    for dirpath, dirnames, filenames in os.walk(path):
+        shutil.chown(dirpath, owner, group)
+        for filename in filenames:
+            shutil.chown(os.path.join(dirpath, filename), owner, group)
+
 
 def main(relation_id=None):
     args = construct_generation_args()
@@ -232,6 +248,9 @@ def main(relation_id=None):
     print(args.model_name)
     trainer = Trainer(args)
     trainer.train()
+
+    # -- Custom (for docker)
+    set_out_permission(args.out_dir, args.owner_user, args.owner_group)
 
 
 if __name__ == '__main__':
